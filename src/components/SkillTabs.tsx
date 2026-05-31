@@ -98,7 +98,9 @@ function SkillItem({ skill }: { skill: Skill }) {
             ].join(' ')}
         >
             {skill.icon ? (
-                <div className="flex h-5 w-5 items-center justify-center text-lg leading-none">{skill.icon}</div>
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center text-lg leading-none">
+                    {skill.icon}
+                </div>
             ) : null}
             <span className="text-xs font-extrabold">{skill.name}</span>
         </article>
