@@ -1,6 +1,6 @@
 const JenkinsIcon = () => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="24px" height="24px">
             <path
                 fill="#d33833"
                 d="M108.893 61.68c0 25.36-20.099 45.918-44.892 45.918-24.794 0-44.893-20.558-44.893-45.918s20.1-45.92 44.893-45.92 44.892 20.56 44.892 45.92"

@@ -1,8 +1,8 @@
 const NginxIcon = () => {
     return (
         <svg
-            width="800px"
-            height="800px"
+            width="24px"
+            height="24px"
             viewBox="-17.5 0 291 291"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"

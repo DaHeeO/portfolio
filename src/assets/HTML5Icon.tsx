@@ -1,6 +1,6 @@
 const HTML5Icon = () => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="24px" height="24px">
             <path fill="#E44D26" d="M19.037 113.876L9.032 1.661h109.936l-10.016 112.198-45.019 12.48z" />
             <path fill="#F16529" d="M64 116.8l36.378-10.086 8.559-95.878H64z" />
             <path

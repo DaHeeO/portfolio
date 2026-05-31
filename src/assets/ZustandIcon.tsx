@@ -1,6 +1,6 @@
 const ZustandIcon = () => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512" width="24px" height="24px">
             <path
                 fill="rgb(73,31,31)"
                 fillOpacity="0.000"
