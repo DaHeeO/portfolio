@@ -1,11 +1,50 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import type { Project } from '../data/projects';
+import type { Project, ProjectDetailBullet, ProjectDetailImage, ProjectDetailSection } from '../data/projects';
 
 type ProjectModalProps = {
     project: Project | null;
     onClose: () => void;
 };
+
+function ProjectDetailBulletList({ bullets }: { bullets: ProjectDetailBullet[] }) {
+    return (
+        <ul className="space-y-3 pl-6 text-[#5f6068]">
+            {bullets.map((bullet) => (
+                <li className="list-disc leading-7" key={bullet.text}>
+                    <span>{bullet.text}</span>
+                    {bullet.children?.length ? (
+                        <ul className="mt-2 space-y-1.5 pl-5 text-[15px] text-[#777880]">
+                            {bullet.children.map((child) => (
+                                <li className="list-[circle] leading-7" key={child}>
+                                    {child}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : null}
+                </li>
+            ))}
+        </ul>
+    );
+}
+
+function getProjectDetailImages(section: ProjectDetailSection): ProjectDetailImage[] {
+    if (section.images) {
+        return section.images;
+    }
+
+    if (!section.image) {
+        return [];
+    }
+
+    return [
+        {
+            src: section.image,
+            alt: section.imageAlt,
+            caption: section.imageCaption,
+        },
+    ];
+}
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
     useEffect(() => {
@@ -34,7 +73,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     }
 
     return createPortal(
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/35 px-5 py-8 backdrop-blur-sm">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-slate-950/35 px-5 py-8 backdrop-blur-sm">
             <button
                 className="absolute inset-0 cursor-default border-0 bg-transparent"
                 type="button"
@@ -86,33 +125,65 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                     ))}
                 </div>
 
-                <div className="space-y-8">
-                    <section>
-                        <h3 className="mb-3 text-lg font-extrabold text-[#19191d]">상세 내용</h3>
-                        <p className="leading-7 text-[#5f6068]">{project.description}</p>
-                        <ul className="mt-4 space-y-2 pl-5 text-[#5f6068]">
-                            {project.implementationNotes.map((note) => (
-                                <li className="list-disc leading-7" key={note}>
-                                    {note}
-                                </li>
-                            ))}
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h3 className="mb-3 text-lg font-extrabold text-[#19191d]">주요 기능 개발</h3>
-                        <div className="space-y-4">
-                            {project.features.map((feature, index) => (
-                                <article key={feature.title}>
-                                    <h4 className="font-extrabold text-[#19191d]">
-                                        {index + 1}. {feature.title}
-                                    </h4>
-                                    <p className="mt-1 leading-7 text-[#5f6068]">{feature.description}</p>
-                                </article>
-                            ))}
-                        </div>
-                    </section>
-                </div>
+                <section>
+                    <h3 className="mb-5 text-xl font-extrabold text-[#19191d]">상세 내용</h3>
+                    <div className="space-y-8">
+                        {project.detailSections.map((section, index) => (
+                            <article key={section.title}>
+                                <h4 className="mb-3 text-lg leading-7 font-extrabold text-[#19191d]">
+                                    {index + 1}. {section.title}
+                                </h4>
+                                <ProjectDetailBulletList bullets={section.bullets} />
+                                {getProjectDetailImages(section).length ? (
+                                    <div className="mt-5 space-y-4">
+                                        {getProjectDetailImages(section).map((image) => (
+                                            <figure
+                                                className="overflow-hidden rounded-lg border border-[#eef0f4] bg-[#f8f9fb]"
+                                                key={image.src}
+                                            >
+                                                {image.title ? (
+                                                    <figcaption className="border-b border-[#eef0f4] px-4 py-3 text-sm font-extrabold text-[#19191d]">
+                                                        {image.title}
+                                                    </figcaption>
+                                                ) : null}
+                                                <img
+                                                    className="max-h-110 w-full object-contain"
+                                                    src={image.src}
+                                                    alt={image.alt ?? `${section.title} 이미지`}
+                                                />
+                                                {image.caption ? (
+                                                    <figcaption className="border-t border-[#eef0f4] px-4 py-3 text-sm leading-6 text-[#777880]">
+                                                        {image.caption}
+                                                    </figcaption>
+                                                ) : null}
+                                            </figure>
+                                        ))}
+                                    </div>
+                                ) : null}
+                                {section.links?.length ? (
+                                    <div className="mt-5 space-y-3">
+                                        {section.links.map((link) => (
+                                            <a
+                                                className="block rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-bold text-blue-700 no-underline transition-colors duration-200 hover:border-blue-200 hover:bg-blue-100"
+                                                href={link.href}
+                                                key={link.href}
+                                                rel="noreferrer"
+                                                target="_blank"
+                                            >
+                                                <span className="block">{link.label}</span>
+                                                {link.description ? (
+                                                    <span className="mt-1 block font-medium leading-6 text-blue-600/80">
+                                                        {link.description}
+                                                    </span>
+                                                ) : null}
+                                            </a>
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </article>
+                        ))}
+                    </div>
+                </section>
             </section>
         </div>,
         document.body,
