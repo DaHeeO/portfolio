@@ -1,34 +1,36 @@
-import { useEffect } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
-import { CursorGradient } from './components/CursorGradient'
-import { SiteHeader } from './components/SiteHeader'
+import { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+import { CursorGradient } from './components/CursorGradient';
+import { SiteHeader } from './components/SiteHeader';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
-  const { hash, pathname } = useLocation()
+    const { hash, pathname } = useLocation();
 
-  useEffect(() => {
-    if (!hash) {
-      return
-    }
+    useEffect(() => {
+        if (!hash) {
+            return;
+        }
 
-    const frameId = requestAnimationFrame(() => {
-      const target = document.getElementById(decodeURIComponent(hash.slice(1)))
+        const frameId = requestAnimationFrame(() => {
+            const target = document.getElementById(decodeURIComponent(hash.slice(1)));
 
-      target?.scrollIntoView()
-    })
+            target?.scrollIntoView();
+        });
 
-    return () => cancelAnimationFrame(frameId)
-  }, [hash, pathname])
+        return () => cancelAnimationFrame(frameId);
+    }, [hash, pathname]);
 
-  return (
-    <main className="relative overflow-hidden bg-white pt-20 text-[#19191d] max-md:pt-16">
-      <CursorGradient />
-      <SiteHeader />
-      <div className="relative z-10">
-        <Outlet />
-      </div>
-    </main>
-  )
+    return (
+        <main className="relative overflow-hidden bg-white pt-20 text-[#19191d] max-md:pt-16">
+            <CursorGradient />
+            <SiteHeader />
+            <div className="relative z-10">
+                <Outlet />
+            </div>
+            <Analytics />
+        </main>
+    );
 }
 
-export default App
+export default App;
